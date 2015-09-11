@@ -3,12 +3,11 @@ import numpy as np
 
 file_name = 'seeds.tsv'
 dataset = np.genfromtxt(file_name, delimiter='\t')
-
+features = dataset[:, :-1]
+dataset = np.genfromtxt(file_name, delimiter='\t', dtype=str)
+labels = dataset[:, -1]
 # data_pd = pd.DataFrame(dataset[:, :-1])
 # print data_pd.head()
-
-features = dataset[:, :-1]
-labels = dataset[:, -1]
 
 feature_names = [
     'area',
@@ -30,7 +29,7 @@ for training,testing in kf:
     classifier.fit(features[training], labels[training])
     prediction = classifier.predict(features[testing])
 
-    curmean = np.mean(prediction = labels[testing])
+    curmean = np.mean(prediction == labels[testing])
     means.append(curmean)
 
 print('Mean accuracy: {:.1%}'.format(np.mean(means)))
